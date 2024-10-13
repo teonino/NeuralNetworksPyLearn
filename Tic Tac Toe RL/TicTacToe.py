@@ -1,5 +1,5 @@
 import numpy as np
-
+#%% Initialization Board
 def initialize_board():
     return np.zeros((3,3), dtype=int)
 
@@ -32,8 +32,36 @@ def make_move(board,row,col,player):
         board[row,col]=player
         return True
     else:
-        print("Move not Allowed, try again")
+        print("Placement impossible, essayez à nouveau")
         return False
+
+#%% Game Logic
+PLAYER_X = 1
+PLAYER_O = -1
+
+def play_game():
+    board = initialize_board()
+    current_player = PLAYER_X
+    game_over = False
     
-board = initialize_board()
-display_board(board)
+    while not game_over:
+        display_board(board)
+        print(f"Au tour du joueur {current_player}")
+        
+        row, col = map(int,input("Entrez la ligne et la colonne (0, 1 ou 2 separé par un espace): ").split())
+        
+        if make_move(board, row, col, current_player):
+            if check_win(board, current_player):
+                display_board(board)
+                print(f"Le joueur {current_player} a gagné !")
+                game_over = True
+            elif check_draw(board):
+                display_board(board)
+                print("Egalité !")
+                game_over = True
+            else:
+                current_player = PLAYER_O if current_player == PLAYER_X else PLAYER_X
+        else:
+            print("Placement impossible, essayez à nouveau !")
+            
+play_game()
