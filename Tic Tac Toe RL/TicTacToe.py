@@ -1,4 +1,6 @@
 import numpy as np
+import random
+
 #%% Initialization Board
 def initialize_board():
     return np.zeros((3,3), dtype=int)
@@ -65,3 +67,15 @@ def play_game():
             print("Placement impossible, essayez à nouveau !")
             
 play_game()
+#%% Simple AI Player
+def random_ai_move(board):
+    empty_cells = [(i, j)] for i in range(3) for j in range (3) if board[i][j]==0]
+    
+    if empty_cells:
+        return random.choice(empty_cells)
+    return None
+
+def play_game():
+    board = initialize_board()
+    current_player = PLAYER_X
+    game_over = False
