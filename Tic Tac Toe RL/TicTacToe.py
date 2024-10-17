@@ -41,7 +41,7 @@ def make_move(board,row,col,player):
 PLAYER_X = 1
 PLAYER_O = -1
 
-def play_game():
+def HumanHuman_play_game():
     board = initialize_board()
     current_player = PLAYER_X
     game_over = False
@@ -66,10 +66,9 @@ def play_game():
         else:
             print("Placement impossible, essayez à nouveau !")
             
-play_game()
 #%% Simple AI Player
 def random_ai_move(board):
-    empty_cells = [(i, j)] for i in range(3) for j in range (3) if board[i][j]==0]
+    empty_cells = [(i, j) for i in range(3) for j in range(3) if board[i][j] == 0]
     
     if empty_cells:
         return random.choice(empty_cells)
@@ -79,3 +78,34 @@ def play_game():
     board = initialize_board()
     current_player = PLAYER_X
     game_over = False
+    
+    while not game_over:
+        display_board(board)
+        print(f"Au tour du joueur {current_player}")
+        
+        if current_player == PLAYER_X:
+            row,col = map(int, input("Entrez la ligne et la colonne (0, 1 ou 2 separé par un espace): ").split())
+        else:
+            print("L'IA joue")
+            move = random_ai_move(board)
+            if move:
+                row,col = move
+            else:
+                print("Plus de place sur le board")
+                break
+        
+        if make_move(board, row, col, current_player):
+            if check_win(board, current_player):
+                display_board(board)
+                print(f"Le joueur {current_player} a gagné")
+                game_over = True
+                
+            elif check_draw(board):
+                display_board(board)
+                print("Egalité !")
+                game_over = True
+            else:
+                current_player = PLAYER_O if current_player == PLAYER_X else PLAYER_X
+        else:
+            print("Placement impossible, essayez à nouveau")
+play_game()
